@@ -141,10 +141,10 @@ RUN embuild.sh DocxRenderer
 
 COPY pre-js.js /pre-js.js
 COPY wrap-main.cpp /wrap-main.cpp
+
 RUN cat /wrap-main.cpp >> /core/X2tConverter/src/main.cpp
 RUN embuild.sh \
     -c -g \
-    -l -gsource-map -l --source-map-base=./ \
     -l "-lgumbo" \
     -l "-lkatana" \
     -l "-L/usr/local/lib" \
@@ -155,6 +155,8 @@ RUN embuild.sh \
     X2tConverter/build/Qt/X2tConverter.pro
 
 WORKDIR /
+RUN cp /core/build/bin/linux_64/x2t* .
+COPY testsheet.bin /testsheet.bin
 COPY test.js /test.js
 EXPOSE 9229
 

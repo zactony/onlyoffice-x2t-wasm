@@ -32,7 +32,6 @@ const getToId = function (ext) {
   return '<m_nFormatTo>'+id+'</m_nFormatTo>';
 };
 
-// const x2t = require('/core/build/bin/linux_64/x2t');
 const x2t = require('./x2t');
 
 x2t.onRuntimeInitialized = function() {
@@ -56,9 +55,10 @@ x2t.onRuntimeInitialized = function() {
     + "<m_bIsNoBase64>false</m_bIsNoBase64>"
     + "</TaskQueueDataConvert>";
 
+  console.log("params: ", params);
   x2t.FS.writeFile('/working/params.xml', params);
   x2t.FS.createLazyFile('/working/', fileName, fileName, true, false);
-  const result = x2t.ccall("main1", "number", ["string"], ["params.xml"]);
+  const result = x2t.ccall("main1", "number", ["string"], ["/working/params.xml"]);
   console.log(result);
   console.log(x2t.FS.readdir('/working/'));
 };
