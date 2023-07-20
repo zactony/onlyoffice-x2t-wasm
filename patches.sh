@@ -9,23 +9,9 @@ sed -i -e 's,$$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/build/libicuuc.so.$$ICU_MAJOR_V
 sed -i -e 's,$$PWD/$$CORE_BUILDS_PLATFORM_PREFIX/build/libicudata.so.$$ICU_MAJOR_VER,,' \
     Common/3dParty/icu/icu.pri
 
-## Remove due to duplicate main() symbols
-#sed -i -e 's,$$PWD/src/zlib-1.2.11/contrib/minizip/miniunz.c,,' \
-#    OfficeUtils/OfficeUtils.pri
-#sed -i -e 's,$$PWD/src/zlib-1.2.11/contrib/minizip/minizip.c,,' \
-#    OfficeUtils/OfficeUtils.pri
-#
-## Add missing include to gzip TODO can I use DEFINE instead?
-#sed -i -e '1 i #include <unistd.h>' \
-#    OfficeUtils/src/zlib-1.2.11/gzguts.h
-#
 ## Fix #include which has to many ../
 sed -i -e 's,#include "../../../../../../DesktopEditor/common/Types.h,#include "../../../../DesktopEditor/common/Types.h",' \
     MsBinaryFile/Common/Vml/PPTShape/BinaryReader.h
-#
-## Add missing include to svg TODO can I use DEFINE instead?
-#sed -i -e '1 i #include "../../Common/MetaFile.h"' \
-#    DesktopEditor/raster/Metafile/Wmf/WmfInterpretator/CInterpretatorSvgBase.cpp
 
 # --disable-new-dtags does not exist in emscripten linker
 sed -i -e 's/-Wl,--disable-new-dtags//' \
@@ -45,31 +31,11 @@ sed -i -e 's,#include "../../katana-parser/src/selector.h",#include "/katana-par
 sed -i -e 's,-lboost_regex,,' \
     Common/3dParty/boost/boost.pri
 
-# Remove network dependencies
-# sed -i -e 's/, kernel_network//' \
-#     PdfFile/PdfFile.pro
-# sed -i -e 's/, kernel_network//' \
-#     HtmlFile2/HtmlFile2.pro
-# sed -i -e 's/, kernel_network//' \
-#     DesktopEditor/doctrenderer/doctrenderer.pro
-# sed -i -e 's/, kernel_network//' \
-#     X2tConverter/build/Qt/X2tConverter.pri
-
-# Link zlib into Common instead of including it in the build
-# sed -i -e 's/build_all_zlib//' \
-#     Common/kernel.pro
-# sed -i -e 's/build_zlib_as_sources//' \
-#     Common/kernel.pro
-
 # Remove c-files with a main() from the build to avoid duplicate symbols
 sed -i -e 's,$$PWD/src/zlib-1.2.11/contrib/minizip/miniunz.c,,' \
     OfficeUtils/OfficeUtils.pri
 sed -i -e 's,$$PWD/src/zlib-1.2.11/contrib/minizip/minizip.c,,' \
     OfficeUtils/OfficeUtils.pri
-
-# Do not include freetype in the build, but link it later
-# sed -i -e 's,$$FREETYPE_PATH/[^ ]*\.c,,' \
-#     DesktopEditor/graphics/pro/freetype.pri
 
 # Do not link CryptoPPLib when building PdfFile. It is linked later.
 # This prevents duplicate symbol errors.
@@ -81,3 +47,18 @@ sed -i -e 's,GenerateUUID,Fb2GenerateUUID,' \
     Fb2File/Fb2File.cpp
 sed -i -e 's,replace_all,Fb2replace_all,' \
     Fb2File/Fb2File.cpp
+
+# Use __ANDROID__ code to fix byte allignment issues for __WASM__
+sed -i -e 's,__ANDROID__,__WASM__,' \
+    OOXML/Binary/Presentation/BinaryFileReaderWriter.cpp
+
+sed -i -e '885 i std::cout << "XXX File" << (size_t)pShort;' \
+    DesktopEditor/common/File.cpp
+sed -i -e '1 i #include <iostream>' \
+    DesktopEditor/common/File.cpp
+
+sed -i -e '2926 i printf("XXX SAX 2 %d\\n", (size_t)&xmlDefaultSAXHandler);' \
+    DesktopEditor/xml/libxml2/SAX2.c
+
+sed -i -e '2862 i printf("XXX SAX %d %d %d %d\\n", sizeof(xmlSAXHandler), sizeof(xmlSAX2StartElement), sizeof(hdlr->startElement), version);' \
+    DesktopEditor/xml/libxml2/SAX2.c

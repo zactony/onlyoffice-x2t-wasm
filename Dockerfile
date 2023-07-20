@@ -90,7 +90,7 @@ RUN git checkout v7.3.2.8
 COPY patches.sh /bin/patches.sh
 RUN patches.sh
 
-# ENV DEV_MODE=on
+ENV DEV_MODE=on
 
 COPY embuild.sh /bin/embuild.sh
 

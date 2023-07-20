@@ -10,7 +10,7 @@ QMAKE_LFLAGS="-s USE_ICU=1"
 C_FLAGS=""
 
 if [ -n "$DEV_MODE" ]; then
-  SANITIZE="-fsanitize=address -fsanitize=undefined"
+  SANITIZE="-fsanitize=address -fsanitize=undefined -Wcast-align -Wover-aligned -sWARN_UNALIGNED=1"
   QMAKE_LFLAGS+=" -sINITIAL_MEMORY=400MB"
 fi
 
@@ -58,7 +58,7 @@ qmake \
     "QMAKE_CXXFLAGS+=-s USE_ICU=1 $SANITIZE $CFLAGS" \
     "QMAKE_LINK=em++" \
     "QMAKE_LFLAGS+=$QMAKE_LFLAGS $SANITIZE $CFLAGS" \
-    "DEFINES+=__linux__ HAVE_UNISTD_H _RWSTD_NO_SETRLIMIT" \
+    "DEFINES+=__linux__ __WASM__ HAVE_UNISTD_H _RWSTD_NO_SETRLIMIT" \
     $QMAKE_ARGS \
     $POSITIONAL_ARGS
 
