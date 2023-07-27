@@ -11,6 +11,7 @@ C_FLAGS=""
 
 if [ -n "$DEV_MODE" ]; then
   SANITIZE="-fsanitize=address -fsanitize=undefined -Wcast-align -Wover-aligned -sWARN_UNALIGNED=1"
+  # SANITIZE="-fsanitize=undefined -Wcast-align -Wover-aligned -sWARN_UNALIGNED=1 -sSAFE_HEAP=1"
   QMAKE_LFLAGS+=" -sINITIAL_MEMORY=400MB"
 fi
 

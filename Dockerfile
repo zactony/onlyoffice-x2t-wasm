@@ -83,9 +83,10 @@ RUN . /emsdk/emsdk_env.sh \
 #  && emmake make install
 
 WORKDIR /
-RUN git clone https://github.com/ONLYOFFICE/core.git
+RUN git clone https://github.com/wginolas/core.git
 WORKDIR /core
-RUN git checkout v7.3.2.8
+RUN git fetch -a \
+ && git checkout 1a1d352de1c6fa6f840f78d842a3a19189f6d19
 
 COPY patches.sh /bin/patches.sh
 RUN patches.sh
