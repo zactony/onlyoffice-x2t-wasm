@@ -1,3 +1,6 @@
+const path = require('node:path');
+const fs = require('node:fs');
+
 const getFormatId = function (ext) {
   // Sheets
   if (ext === 'xlsx') { return 257; }
@@ -34,31 +37,58 @@ const getToId = function (ext) {
 
 const x2t = require('./x2t');
 
+function copyToWasm(nodePath, wasmPath) {
+  const data = fs.readFileSync(nodePath, {encoding: 'binary'});
+  const stream = x2t.FS.open(wasmPath, 'w');
+  x2t.FS.write(stream, data, 0, data.length, 0);
+  x2t.FS.close(stream);
+}
+
+function copyFromWasm(wasmPath, nodePath) {
+  const data = x2t.FS.readFile(wasmPath, {encoding: 'binary'});
+  fs.writeFileSync(nodePath, data, { encoding: 'binary'});
+}
+
+function convert(inputPath, outputPath) {
+  const inputName = path.basename(inputPath);
+  const outputName = path.basename(outputPath);
+  const inputFormat = path.extname(inputPath).substring(1);
+  const outputFormat = path.extname(outputPath).substring(1);
+  const pdfData = "";
+
+  console.log({inputPath, outputPath, inputName, outputName, inputFormat, outputFormat});
+  const params =  "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+    + "<TaskQueueDataConvert xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
+    + "<m_sFileFrom>/working/" + inputName + "</m_sFileFrom>"
+    + "<m_sThemeDir>/working/themes</m_sThemeDir>"
+    + "<m_sFileTo>/working/" + outputName + "</m_sFileTo>"
+    + pdfData
+    + getFromId(inputFormat)
+    + getToId(outputFormat)
+    + "<m_bIsNoBase64>false</m_bIsNoBase64>"
+    + "<m_nCsvTxtEncoding>46</m_nCsvTxtEncoding>"
+    + "<m_nCsvDelimiter>4</m_nCsvDelimiter>"
+    // + "<m_sCsvDelimiterChar>,</m_sCsvDelimiterChar>"
+    + "</TaskQueueDataConvert>";
+
+  console.log(params);
+  x2t.FS.writeFile('/working/params.xml', params);
+  copyToWasm(inputPath, '/working/' + inputName);
+
+  console.log(x2t.FS.readdir('/working/'));
+  const result = x2t.ccall("main1", "number", ["string"], ["/working/params.xml"]);
+  console.log(x2t.FS.readdir('/working/'));
+  console.log(result);
+  copyFromWasm('/working/' + outputName, outputPath);
+}
+
 x2t.onRuntimeInitialized = function() {
   console.log("on init");
   x2t.FS.mkdir('/working');
   x2t.FS.mkdir('/working/media');
   x2t.FS.mkdir('/working/fonts');
   x2t.FS.mkdir('/working/themes');
-  const fileName = "testsheet.bin";
-  const outputFormat = "xlsx";
-  const pdfData = "";
-  const inputFormat = "bin";
-  const params =  "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-    + "<TaskQueueDataConvert xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
-    + "<m_sFileFrom>/working/" + fileName + "</m_sFileFrom>"
-    + "<m_sThemeDir>/working/themes</m_sThemeDir>"
-    + "<m_sFileTo>/working/" + fileName + "." + outputFormat + "</m_sFileTo>"
-    + pdfData
-    + getFromId(inputFormat)
-    + getToId(outputFormat)
-    + "<m_bIsNoBase64>false</m_bIsNoBase64>"
-    + "</TaskQueueDataConvert>";
 
-  console.log("params: ", params);
-  x2t.FS.writeFile('/working/params.xml', params);
-  x2t.FS.createLazyFile('/working/', fileName, fileName, true, false);
-  const result = x2t.ccall("main1", "number", ["string"], ["/working/params.xml"]);
-  console.log(result);
-  console.log(x2t.FS.readdir('/working/'));
+  convert('/tests/test1.xlsx', '/results/out1.csv');
+  // convert('results/out1.bin', 'restuls/out1.xlsx');
 };

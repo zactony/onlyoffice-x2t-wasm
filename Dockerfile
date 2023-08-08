@@ -68,7 +68,7 @@ WORKDIR /
 RUN git clone https://github.com/wginolas/core.git
 WORKDIR /core
 RUN git fetch -a \
- && git checkout v7.3.2.13
+ && git checkout 83d37aec6a8c04db79232ab0ac9373d886a9bad1
 
 COPY patches.sh /bin/patches.sh
 RUN patches.sh
@@ -139,7 +139,6 @@ RUN embuild.sh \
 
 WORKDIR /
 RUN cp /core/build/bin/linux_64/x2t* .
-COPY testsheet.bin /testsheet.bin
 COPY test.js /test.js
 EXPOSE 9229
 
