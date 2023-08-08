@@ -63,35 +63,17 @@ RUN . /emsdk/emsdk_env.sh \
 RUN . /emsdk/emsdk_env.sh \
  && emmake make install
 
-# TODO doc
-# WORKDIR /
-# RUN git clone https://github.com/unicode-org/icu.git
-# WORKDIR /icu
-# RUN git checkout release-73-1
-# WORKDIR /icu/icu4c/source
-# RUN ./configure
-# RUN make
-# RUN make install
-# RUN cp /usr/local/sbin/* /usr/local/bin
-# RUN make clean
-# RUN . /emsdk/emsdk_env.sh \
-#  && emconfigure ./configure
-# RUN . /emsdk/emsdk_env.sh \
-#  && emmake make "INVOKE=LD_LIBRARY_PATH=/usr/local/lib" "PKGDATA_INVOKE=LD_LIBRARY_PATH=/usr/local/lib" TOOLBINDIR=/usr/local/bin
-# RUN exit 1
-# RUN . /emsdk/emsdk_env.sh \
-#  && emmake make install
 
 WORKDIR /
 RUN git clone https://github.com/wginolas/core.git
 WORKDIR /core
 RUN git fetch -a \
- && git checkout 1a1d352de1c6fa6f840f78d842a3a19189f6d19
+ && git checkout v7.3.2.13
 
 COPY patches.sh /bin/patches.sh
 RUN patches.sh
 
-ENV DEV_MODE=on
+# ENV DEV_MODE=on
 
 COPY embuild.sh /bin/embuild.sh
 

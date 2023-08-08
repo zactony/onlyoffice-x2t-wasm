@@ -1,13 +1,13 @@
 #!/usr/bin/bash
 
-set -e
+set -exo pipefail
 
 POSITIONAL_ARGS=()
 
 QMAKE_ARGS=""
 J_ARG="-j 8"
 QMAKE_LFLAGS="-s USE_ICU=1"
-C_FLAGS=""
+CFLAGS="-s STACK_SIZE=128kb"
 
 if [ -n "$DEV_MODE" ]; then
   SANITIZE="-fsanitize=address -fsanitize=undefined -Wcast-align -Wover-aligned -sWARN_UNALIGNED=1"
@@ -24,7 +24,6 @@ while [[ $# -gt 0 ]]; do
       ;;
     -c)
       CFLAGS+=" $2"
-      QMAKE_LFLAGS+=" $2"
       shift # past argument
       shift # past value
       ;;
@@ -53,6 +52,8 @@ pushd /emsdk
 popd
 
 qmake \
+    "QMAKE_CXXFLAGS_RELEASE -= -O2" \
+    "QMAKE_CXXFLAGS_RELEASE *= -Os" \
     "QMAKE_CC=emcc" \
     "QMAKE_CFLAGS+=-s USE_ICU=1 $SANITIZE $CFLAGS" \
     "QMAKE_CXX=em++" \

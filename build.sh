@@ -8,7 +8,8 @@ docker build . | tee $DOCKER_LOG
 
 IMAGE_ID=$(tail -1 $DOCKER_LOG | sed -e 's/Successfully built //')
 
-docker run -it -p 9229:9229 $IMAGE_ID
+# docker run -it -p 9229:9229 $IMAGE_ID
+docker run -it $IMAGE_ID
 
 rm -rf build
 mkdir build
