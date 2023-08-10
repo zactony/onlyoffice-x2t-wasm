@@ -68,7 +68,7 @@ WORKDIR /
 RUN git clone https://github.com/wginolas/core.git
 WORKDIR /core
 RUN git fetch -a \
- && git checkout 83d37aec6a8c04db79232ab0ac9373d886a9bad1
+ && git checkout c3ba5acbffb6eab2ea9dc2fac77fc15ad70bb879
 
 COPY patches.sh /bin/patches.sh
 RUN patches.sh

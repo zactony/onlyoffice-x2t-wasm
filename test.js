@@ -38,15 +38,24 @@ const getToId = function (ext) {
 const x2t = require('./x2t');
 
 function copyToWasm(nodePath, wasmPath) {
-  const data = fs.readFileSync(nodePath, {encoding: 'binary'});
+  const data = fs.readFileSync(nodePath);
+  console.log('copyToWasm', data[0], data[1], data[2], data[3]);
   const stream = x2t.FS.open(wasmPath, 'w');
   x2t.FS.write(stream, data, 0, data.length, 0);
   x2t.FS.close(stream);
 }
 
+function copyDirToWasm(nodePath, wasmPath) {
+  const dir = fs.readdirSync(nodePath);
+  for (const f of dir) {
+    copyToWasm(path.join(nodePath, f), path.join(wasmPath, f));
+  }
+}
+
 function copyFromWasm(wasmPath, nodePath) {
   const data = x2t.FS.readFile(wasmPath, {encoding: 'binary'});
-  fs.writeFileSync(nodePath, data, { encoding: 'binary'});
+  console.log('copyFromWasm', data[0], data[1], data[2], data[3]);
+  fs.writeFileSync(nodePath, data);
 }
 
 function convert(inputPath, outputPath) {
@@ -59,12 +68,13 @@ function convert(inputPath, outputPath) {
   console.log({inputPath, outputPath, inputName, outputName, inputFormat, outputFormat});
   const params =  "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
     + "<TaskQueueDataConvert xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
-    + "<m_sFileFrom>/working/" + inputName + "</m_sFileFrom>"
+    + "<m_sFontDir>/working/fonts/</m_sFontDir>"
     + "<m_sThemeDir>/working/themes</m_sThemeDir>"
+    + "<m_sFileFrom>/working/" + inputName + "</m_sFileFrom>"
     + "<m_sFileTo>/working/" + outputName + "</m_sFileTo>"
     + pdfData
-    + getFromId(inputFormat)
-    + getToId(outputFormat)
+    // + getFromId(inputFormat)
+    // + getToId(outputFormat)
     + "<m_bIsNoBase64>false</m_bIsNoBase64>"
     + "<m_nCsvTxtEncoding>46</m_nCsvTxtEncoding>"
     + "<m_nCsvDelimiter>4</m_nCsvDelimiter>"
@@ -89,6 +99,10 @@ x2t.onRuntimeInitialized = function() {
   x2t.FS.mkdir('/working/fonts');
   x2t.FS.mkdir('/working/themes');
 
-  convert('/tests/test1.xlsx', '/results/out1.csv');
-  // convert('results/out1.bin', 'restuls/out1.xlsx');
+  copyDirToWasm('/tests/fonts', '/working/fonts');
+
+  convert('/tests/test1.xlsx', '/results/out1.bin');
+  convert('/results/out1.bin', '/results/out1.xlsx');
+  // convert('/results/out1.bin', '/results/out1.csv');
+  // convert('/results/out1.bin', '/results/out1.pdf');
 };
