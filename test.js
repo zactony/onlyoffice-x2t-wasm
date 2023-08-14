@@ -101,8 +101,11 @@ x2t.onRuntimeInitialized = function() {
 
   copyDirToWasm('/tests/fonts', '/working/fonts');
 
+  // convert('/tests/test1.xlsx', '/results/out1.pdf');
   convert('/tests/test1.xlsx', '/results/out1.bin');
-  convert('/results/out1.bin', '/results/out1.xlsx');
+  // convert('/results/out1.bin', '/results/out1.xlsx');
+  // convert('/results/out1.bin', '/results/out1.ods');
+  // convert('/tests/test1.xlsx', '/results/out1.csv');
   // convert('/results/out1.bin', '/results/out1.csv');
-  // convert('/results/out1.bin', '/results/out1.pdf');
+  convert('/results/out1.bin', '/results/out1.pdf');
 };

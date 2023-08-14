@@ -6,8 +6,8 @@ POSITIONAL_ARGS=()
 
 QMAKE_ARGS=""
 J_ARG="-j 8"
-QMAKE_LFLAGS="-s USE_ICU=1"
-CFLAGS="-s STACK_SIZE=128kb"
+QMAKE_LFLAGS="-sUSE_ICU=1 -sALLOW_MEMORY_GROWTH"
+CFLAGS="-sSTACK_SIZE=128kb"
 
 if [ -n "$DEV_MODE" ]; then
   SANITIZE="-fsanitize=address -fsanitize=undefined -Wcast-align -Wover-aligned -sWARN_UNALIGNED=1"
