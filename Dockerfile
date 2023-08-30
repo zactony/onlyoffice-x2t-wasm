@@ -65,10 +65,11 @@ RUN . /emsdk/emsdk_env.sh \
 
 
 WORKDIR /
-RUN git clone https://github.com/wginolas/core.git
+# RUN git clone https://github.com/wginolas/core.git
+RUN git clone https://github.com/ONLYOFFICE/core.git
 WORKDIR /core
 RUN git fetch -a \
- && git checkout c0bf0126d9817ff79198b5f41d92431621d4eab5
+ && git checkout v7.3.2.13
 
 COPY patches.sh /bin/patches.sh
 RUN patches.sh
