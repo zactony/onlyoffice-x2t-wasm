@@ -39,7 +39,6 @@ const x2t = require('./x2t');
 
 function copyToWasm(nodePath, wasmPath) {
   const data = fs.readFileSync(nodePath);
-  console.log('copyToWasm', data[0], data[1], data[2], data[3]);
   const stream = x2t.FS.open(wasmPath, 'w');
   x2t.FS.write(stream, data, 0, data.length, 0);
   x2t.FS.close(stream);
@@ -54,7 +53,6 @@ function copyDirToWasm(nodePath, wasmPath) {
 
 function copyFromWasm(wasmPath, nodePath) {
   const data = x2t.FS.readFile(wasmPath, {encoding: 'binary'});
-  console.log('copyFromWasm', data[0], data[1], data[2], data[3]);
   fs.writeFileSync(nodePath, data);
 }
 
@@ -107,5 +105,5 @@ x2t.onRuntimeInitialized = function() {
   // convert('/results/out1.bin', '/results/out1.ods');
   // convert('/tests/test1.xlsx', '/results/out1.csv');
   // convert('/results/out1.bin', '/results/out1.csv');
-  convert('/results/out1.bin', '/results/out1.pdf');
+  // convert('/results/out1.bin', '/results/out1.pdf');
 };

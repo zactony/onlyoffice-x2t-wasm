@@ -47,18 +47,3 @@ sed -i -e 's,GenerateUUID,Fb2GenerateUUID,' \
     Fb2File/Fb2File.cpp
 sed -i -e 's,replace_all,Fb2replace_all,' \
     Fb2File/Fb2File.cpp
-
-# Use __ANDROID__ code to fix byte allignment issues for __WASM__
-sed -i -e 's,__ANDROID__,__WASM__,' \
-    OOXML/Binary/Presentation/BinaryFileReaderWriter.cpp
-
-# sed -i -e '885 i std::cout << "XXX File" << (size_t)pShort;' \
-#     DesktopEditor/common/File.cpp
-# sed -i -e '1 i #include <iostream>' \
-#     DesktopEditor/common/File.cpp
-
-# sed -i -e '2926 i printf("XXX SAX 2 %d\\n", (size_t)&xmlDefaultSAXHandler);' \
-#     DesktopEditor/xml/libxml2/SAX2.c
-
-# sed -i -e '2862 i printf("XXX SAX %d %d %d %d\\n", sizeof(xmlSAXHandler), sizeof(xmlSAX2StartElement), sizeof(hdlr->startElement), version);' \
-#     DesktopEditor/xml/libxml2/SAX2.c

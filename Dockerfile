@@ -51,7 +51,7 @@ RUN . /emsdk/emsdk_env.sh \
 RUN . /emsdk/emsdk_env.sh \
  && emmake make install
 
-# TODO can I use emscriptens boost instead?
+# emscriptens boost does not work because of missing symbols
 WORKDIR /
 RUN git clone --recurse-submodules https://github.com/boostorg/boost.git
 WORKDIR /boost
