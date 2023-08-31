@@ -115,8 +115,8 @@ RUN embuild.sh Common/3dParty/cryptopp/project
 RUN embuild.sh Fb2File
 RUN embuild.sh Common/Network
 RUN embuild.sh --no-sanitize PdfFile
-RUN embuild.sh HtmlFile2
-RUN embuild.sh EpubFile
+# RUN embuild.sh HtmlFile2
+# RUN embuild.sh EpubFile
 RUN embuild.sh XpsFile
 RUN embuild.sh DjVuFile
 RUN embuild.sh HtmlRenderer

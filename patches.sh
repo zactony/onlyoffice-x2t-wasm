@@ -47,3 +47,9 @@ sed -i -e 's,GenerateUUID,Fb2GenerateUUID,' \
     Fb2File/Fb2File.cpp
 sed -i -e 's,replace_all,Fb2replace_all,' \
     Fb2File/Fb2File.cpp
+
+# Remove build dependencies to reduce WASM size
+sed -i -e 's/HtmlFile2, //' \
+    X2tConverter/build/Qt/X2tConverter.pri
+sed -i -e 's/EpubFile, //' \
+    X2tConverter/build/Qt/X2tConverter.pri
