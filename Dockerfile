@@ -112,14 +112,14 @@ RUN embuild.sh OdfFile/Projects/Linux
 RUN embuild.sh RtfFile/Projects/Linux
 RUN embuild.sh Common/cfcpp
 RUN embuild.sh Common/3dParty/cryptopp/project
-RUN embuild.sh Fb2File
+# RUN embuild.sh Fb2File
 RUN embuild.sh Common/Network
 RUN embuild.sh --no-sanitize PdfFile
 # RUN embuild.sh HtmlFile2
 # RUN embuild.sh EpubFile
-RUN embuild.sh XpsFile
-RUN embuild.sh DjVuFile
-RUN embuild.sh HtmlRenderer
+# RUN embuild.sh XpsFile
+# RUN embuild.sh DjVuFile
+# RUN embuild.sh HtmlRenderer
 RUN embuild.sh -q "CONFIG+=doct_renderer_empty" DesktopEditor/doctrenderer
 RUN embuild.sh DocxRenderer
 

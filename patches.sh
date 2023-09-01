@@ -53,3 +53,17 @@ sed -i -e 's/HtmlFile2, //' \
     X2tConverter/build/Qt/X2tConverter.pri
 sed -i -e 's/EpubFile, //' \
     X2tConverter/build/Qt/X2tConverter.pri
+sed -i -e 's/XpsFile, //' \
+    X2tConverter/build/Qt/X2tConverter.pri
+sed -i -e 's/DjVuFile, //' \
+    X2tConverter/build/Qt/X2tConverter.pri
+sed -i -e 's/HtmlRenderer, //' \
+    X2tConverter/build/Qt/X2tConverter.pri
+sed -i -e 's/kernel_network, //' \
+    X2tConverter/build/Qt/X2tConverter.pri
+sed -i -e 's/Fb2File, //' \
+    X2tConverter/build/Qt/X2tConverter.pri
+sed -i -e 's/-lVbaFormatLib//' \
+    X2tConverter/build/Qt/X2tConverter.pri
+sed -i -e 's/-lRtfFormatLib//' \
+    X2tConverter/build/Qt/X2tConverter.pri
