@@ -20,9 +20,10 @@ RUN apt update \
 WORKDIR /
 RUN git clone https://github.com/emscripten-core/emsdk.git
 WORKDIR /emsdk
-RUN git checkout 3.1.35
-RUN ./emsdk install 3.1.35
-RUN ./emsdk activate 3.1.35
+RUN git fetch -a \
+ && git checkout 3.1.45
+RUN ./emsdk install 3.1.45
+RUN ./emsdk activate 3.1.45
 
 RUN . /emsdk/emsdk_env.sh && qtchooser -install qt6 $(which qmake6)
 ENV QT_SELECT=qt6
