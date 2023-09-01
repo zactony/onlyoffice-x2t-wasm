@@ -202,7 +202,8 @@ core_linux {
     equals(TEMPLATE, app) {
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
         QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/system\'"
-        QMAKE_LFLAGS += -Wl,--disable-new-dtags
+        # CryptPad: --disable-new-dtags does not exist in emscripten linker
+        # QMAKE_LFLAGS += -Wl,--disable-new-dtags
     }
 }
 

@@ -69,8 +69,9 @@ HEADERS +=  ../../src/cextracttools.h \
             ../../src/ASCConverters.h
 
 
+# CryptPad: Remove build dependencies to reduce WASM size
 #vbaformat
-LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lVbaFormatLib
+#LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lVbaFormatLib
 #Xls file
 LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lXlsFormatLib
 # odf format
@@ -80,7 +81,7 @@ LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lDocFormatLib
 # ppt file
 LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lPptFormatLib
 #rtf file
-LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lRtfFormatLib
+#LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lRtfFormatLib
 #txt(xml) file
 LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lTxtXmlFormatLib
 #bin document
@@ -99,7 +100,8 @@ LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lCryptoPPLib
 
 #All dynamic libs
 
-ADD_DEPENDENCY(graphics, kernel, UnicodeConverter, kernel_network, Fb2File, PdfFile, HtmlFile2, EpubFile, XpsFile, DjVuFile, HtmlRenderer, doctrenderer, DocxRenderer)
+# CryptPad: Remove build dependencies to reduce WASM size
+ADD_DEPENDENCY(graphics, kernel, UnicodeConverter, PdfFile, doctrenderer, DocxRenderer)
 
 
 #####################################################

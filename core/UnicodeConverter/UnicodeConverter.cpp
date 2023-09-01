@@ -48,6 +48,9 @@
 #include <windows.h>
 #endif
 
+// CryptPad: for some reason TRUE is unknown here
+#define TRUE true
+
 std::string g_overrideIcuDataPath = "";
 
 namespace NSUnicodeConverter

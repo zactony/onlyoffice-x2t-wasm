@@ -7,7 +7,8 @@
 #include <vector>
 #include <algorithm>
 
-#include "gumbo-parser/src/gumbo.h"
+// CryptPad: Use globally installed gumbo parser
+#include "/gumbo-parser/src/gumbo.h"
 #include "../../../DesktopEditor/common/File.h"
 #include "../../../DesktopEditor/common/Directory.h"
 #include "../../../DesktopEditor/common/StringBuilder.h"

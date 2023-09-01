@@ -8,7 +8,8 @@
 #include <iostream>
 #include <numeric>
 
-#include "../../katana-parser/src/selector.h"
+// CryptPad: Use globally installed katana parser
+#include "/katana-parser/src/selector.h"
 #include "../../../../../UnicodeConverter/UnicodeConverter.h"
 #include "ConstValues.h"
 #include "../../../../../DesktopEditor/common/File.h"

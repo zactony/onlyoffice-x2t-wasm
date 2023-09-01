@@ -1589,7 +1589,8 @@ HRESULT CFb2File::Open(const std::wstring& sPath, const std::wstring& sDirectory
     return S_OK;
 }
 
-void replace_all(std::wstring& s, const std::wstring& s1, const std::wstring& s2)
+// CryptPad: Prevent duplicate symbol error by renaming this function
+void Fb2replace_all(std::wstring& s, const std::wstring& s1, const std::wstring& s2)
 {
     size_t pos = s.find(s1);
     size_t l = s2.length();
@@ -1636,11 +1637,11 @@ void readStream(NSStringUtils::CStringBuilder& oXml, NSStringUtils::CStringBuild
 
             if (!sAtrName.empty())
             {
-                replace_all(sAtrContent, L"&", L"&amp;");
-                replace_all(sAtrContent, L"<", L"&lt;");
-                replace_all(sAtrContent, L">", L"&gt;");
-                replace_all(sAtrContent, L"\"", L"&quot;");
-                replace_all(sAtrContent, L"\'", L"&#39;");
+                Fb2replace_all(sAtrContent, L"&", L"&amp;");
+                Fb2replace_all(sAtrContent, L"<", L"&lt;");
+                Fb2replace_all(sAtrContent, L">", L"&gt;");
+                Fb2replace_all(sAtrContent, L"\"", L"&quot;");
+                Fb2replace_all(sAtrContent, L"\'", L"&#39;");
 
                 if (sAtrName == L"creator")
                     oTitleInfo.WriteString(L"<author><nickname>" + sAtrContent + L"</nickname></author>");
@@ -1927,7 +1928,8 @@ void readLi(NSStringUtils::CStringBuilder& oXml, NSStringUtils::CStringBuilder& 
     } while (oIndexHtml.ReadNextSiblingNode2(nDeath));
 }
 
-std::wstring GenerateUUID()
+// CryptPad: Prevent duplicate symbol error by renaming this function
+std::wstring Fb2GenerateUUID()
 {
     std::mt19937 oRand(time(0));
     std::wstringstream sstream;

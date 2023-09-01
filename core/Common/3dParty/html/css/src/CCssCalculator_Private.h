@@ -7,7 +7,8 @@
 #include <list>
 #include <functional>
 #include "CElement.h"
-#include "../../katana-parser/src/katana.h"
+// CryptPad: Use globally installed katana parser
+#include "/katana-parser/src/katana.h"
 
 namespace NSCSS
 {

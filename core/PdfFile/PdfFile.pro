@@ -111,7 +111,9 @@ build_viewer_module {
 
 DEFINES += CRYPTOPP_DISABLE_ASM \
            NOMINMAX
-LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH -lCryptoPPLib
+# CryptPad: Do not link CryptoPPLib when building PdfFile. It is linked later.
+# This prevents duplicate symbol errors.
+LIBS += -L$$CORE_BUILDS_LIBRARIES_PATH # -lCryptoPPLib
 
 core_linux {
     DEFINES += HAVE_UNISTD_H \
