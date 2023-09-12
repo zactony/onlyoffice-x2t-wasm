@@ -34,12 +34,38 @@
 #define _IO_WEB_SOCKET_H_
 
 #include "../websocketbase.h"
+#include "../../../../../DesktopEditor/graphics/TemporaryCS.h"
 
 namespace NSNetwork
 {
     namespace NSWebSocket
     {
-        class CIOWebSocket_private;
+        class CIOWebSocket;
+        class CIOWebSocket_private
+        {
+        protected:
+            CIOWebSocket* m_base;
+            NSCriticalSection::CRITICAL_SECTION m_oCS;
+            NSCriticalSection::CRITICAL_SECTION m_oCS_Events;
+        public:
+            CIOWebSocket_private(CIOWebSocket* base)
+            {
+                m_base = base;
+                m_oCS.InitializeCriticalSection();
+                m_oCS_Events.InitializeCriticalSection();
+            }
+            virtual ~CIOWebSocket_private()
+            {
+                m_oCS_Events.DeleteCriticalSection();
+                m_oCS.DeleteCriticalSection();
+            }
+
+            virtual void open(const std::map<std::string, std::string>& query) = 0;
+            virtual void send(const std::string& message) = 0;
+            virtual void close() = 0;
+            virtual void setReconnectInfo(const int& attemtCount, const int& delay, const int& delayMax) = 0;
+        };
+
         class CIOWebSocket: public CWebWorkerBase
         {
         private:
@@ -53,8 +79,11 @@ namespace NSNetwork
             virtual void open(const std::map<std::string, std::string>& query) override;
             virtual void send(const std::string& message) override;
             virtual void close() override;
+            virtual bool setReconnectInfo(const int& attemtCount, const int& delay, const int& delayMax);
 
             friend class CIOWebSocket_private;
+            friend class CIOWebSocket_private_tls;
+            friend class CIOWebSocket_private_no_tls;
         };
     }
 }
