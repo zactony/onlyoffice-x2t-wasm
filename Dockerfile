@@ -13,7 +13,8 @@ RUN apt update \
        make \
        qt6-base-dev \
        build-essential \
-       cmake
+       cmake \
+       zip
 
 WORKDIR /
 RUN git clone https://github.com/emscripten-core/emsdk.git
@@ -130,8 +131,14 @@ RUN embuild.sh \
     -l "-sALLOW_MEMORY_GROWTH" \
     X2tConverter/build/Qt/X2tConverter.pro
 
+WORKDIR /core/build/bin/linux_64/
+RUN cp x2t x2t.js
+RUN zip x2t.zip x2t.wasm x2t.js
+RUN sha512sum x2t.zip > x2t.zip.sha512
+
 WORKDIR /
 RUN cp /core/build/bin/linux_64/x2t* .
+
 COPY test.js /test.js
 EXPOSE 9229
 
