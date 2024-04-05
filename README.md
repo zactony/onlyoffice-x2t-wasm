@@ -1,5 +1,9 @@
 # Build OnlyOffice x2t for WebAssembly
 
+## Modifications by CryptPad
+
+This repository contains a modified copy of https://github.com/ONLYOFFICE/core.git in `/core`. These modifications are made to be able to compile `x2t` to WebAssembly.
+
 ## Build
 
 This is a Dockerfile building OnlyOffice x2t in WebAssembly using emscripten.
