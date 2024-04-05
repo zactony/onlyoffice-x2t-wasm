@@ -2,11 +2,9 @@
 
 set -euxo pipefail
 
-DOCKER_LOG=$(mktemp)
+docker build .
 
-docker build . | tee $DOCKER_LOG
-
-IMAGE_ID=$(tail -1 $DOCKER_LOG | sed -e 's/Successfully built //')
+IMAGE_ID=$(docker build --quiet .)
 
 rm -rf results
 mkdir results

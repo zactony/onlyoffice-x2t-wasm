@@ -1,7 +1,6 @@
 FROM ubuntu:22.04
 SHELL ["/bin/bash", "-c"]
 
-# TODO remove libc++-dev
 RUN apt update \
     && apt install -y \
        git \
@@ -14,16 +13,15 @@ RUN apt update \
        make \
        qt6-base-dev \
        build-essential \
-       cmake \
-       libc++-dev
+       cmake
 
 WORKDIR /
 RUN git clone https://github.com/emscripten-core/emsdk.git
 WORKDIR /emsdk
 RUN git fetch -a \
- && git checkout 3.1.45
-RUN ./emsdk install 3.1.45
-RUN ./emsdk activate 3.1.45
+ && git checkout 3.1.56
+RUN ./emsdk install 3.1.56
+RUN ./emsdk activate 3.1.56
 
 RUN . /emsdk/emsdk_env.sh && qtchooser -install qt6 $(which qmake6)
 ENV QT_SELECT=qt6
@@ -54,11 +52,12 @@ RUN . /emsdk/emsdk_env.sh \
 
 # emscriptens boost does not work because of missing symbols
 WORKDIR /
-RUN git clone --recurse-submodules https://github.com/boostorg/boost.git
+RUN git clone https://github.com/boostorg/boost.git
 WORKDIR /boost
-RUN git checkout boost-1.82.0
+RUN git checkout boost-1.84.0
+RUN git submodule update --init --recursive
 RUN . /emsdk/emsdk_env.sh \
- && CXXFLAGS=-fms-extensions emcmake cmake '-DBOOST_EXCLUDE_LIBRARIES=wave;type_erasure;thread;serialization;program_options;log;locale;json;graph;contract;context;coroutine;fiber'
+ && CXXFLAGS=-fms-extensions emcmake cmake '-DBOOST_EXCLUDE_LIBRARIES=context;cobalt;coroutine;fiber;log;thread;wave;type_erasure;serialization;locale;contract;graph'
 RUN . /emsdk/emsdk_env.sh \
  && emmake make
 RUN . /emsdk/emsdk_env.sh \
