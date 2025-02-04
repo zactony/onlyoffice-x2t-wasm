@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:22.04 AS build
 SHELL ["/bin/bash", "-c"]
 
 RUN apt update \
@@ -140,9 +140,23 @@ WORKDIR /
 RUN cp /core/build/bin/linux_64/x2t* .
 
 COPY test.js /test.js
-EXPOSE 9229
 
-# CMD . /emsdk/emsdk_env.sh \
-#  && node --inspect-brk=0.0.0.0:9229 test.js
-CMD . /emsdk/emsdk_env.sh \
+
+
+
+FROM build AS test
+COPY tests /tests
+RUN mkdir /results
+RUN . /emsdk/emsdk_env.sh \
  && node test.js
+
+
+FROM scratch AS test-output
+COPY --from=test /results /
+
+
+FROM scratch AS output
+COPY --from=build /core/build/bin/linux_64/x2t x2t.js
+COPY --from=build /core/build/bin/linux_64/x2t.wasm x2t.wasm
+COPY --from=build /core/build/bin/linux_64/x2t.zip x2t.zip
+COPY --from=build /core/build/bin/linux_64/x2t.zip.sha512 x2t.zip.sha512
